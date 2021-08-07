@@ -9,43 +9,25 @@ const style = {
 	padding: 8,
 };
 
-const FlatList = () => {
+const SingleQueryFlatList = () => {
 	const [hasMore, setHasMore] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [offset, setOffset] = useState(10);
+	const [offset, setOffset] = useState(0);
 
-	const { data: lastResult } = useGetAllRandomUsersQuery(
+	const { data } = useGetAllRandomUsersQuery(
 		{
-			page: currentPage - 1,
+			page: currentPage,
 			limit: 10,
 		},
 		{ skip: currentPage === 1 }
 	);
-	const { data: currentResult } = useGetAllRandomUsersQuery({
-		page: currentPage,
-		limit: 10,
-	});
-	const { data: nextResult } = useGetAllRandomUsersQuery({
-		page: currentPage + 1,
-		limit: 10,
-	});
 
 	const combined = useMemo(() => {
-		const arr: any = [];
-		for (const data of [lastResult, currentResult, nextResult]) {
-			if (data) {
-				console.log('arr', arr);
-				arr.splice(offset, data.length, ...data);
-			}
-		}
-		return arr;
-	}, [lastResult, currentResult, nextResult, offset]);
+		const arr: any = [...data];
+		return [...arr, ...data];
+	}, [data]);
 
 	console.log('combined', combined);
-
-	console.log('currentPage', currentPage);
-	console.log('offset', offset);
-	console.log('hasMore', hasMore);
 
 	const fetchMore = () => {
 		console.log('Fatch Called');
@@ -54,9 +36,12 @@ const FlatList = () => {
 			return;
 		}
 		setCurrentPage((pageIndex) => pageIndex + 1);
-		// setOffset((preOffset) => preOffset + 10);
+
 		return combined;
 	};
+
+	console.log('currentPage', currentPage);
+	console.log('hasMore', hasMore);
 
 	return (
 		<div
@@ -99,4 +84,4 @@ const FlatList = () => {
 	);
 };
 
-export default FlatList;
+export default SingleQueryFlatList;

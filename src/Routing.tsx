@@ -6,6 +6,7 @@ import Login from './Login';
 import NewFlatList from './NewFlatList';
 import RandomList from './RandomList';
 import Register from './Register';
+import SingleQueryFlatList from './SingleQueryFlatList';
 import Todos from './Todos';
 import UserProfile from './UserProfile';
 
@@ -22,6 +23,7 @@ const Routing = () => {
 				<Route path="/randoms" component={RandomList} />
 				<Route path="/flatlist" component={FlatList} />
 				<Route path="/new_flatlist" component={NewFlatList} />
+				<Route path="/single_flatlist" component={SingleQueryFlatList} />
 			</Switch>
 		</Router>
 	);
